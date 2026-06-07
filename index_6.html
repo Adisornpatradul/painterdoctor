@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADISORN PATRADUL — PainterDoctor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Sarabun:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-pale: #F5E6B8;
+    --black: #0A0A0A;
+    --charcoal: #1A1A1A;
+    --dark: #111111;
+    --cream: #F8F3E8;
+    --cream-dark: #EDE3CC;
+    --text-light: #C8BFA8;
+    --text-mid: #8A7D65;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  #hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #0A0A0A 0%, #1A1410 50%, #0A0A0A 100%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 1.4s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .hero-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: 4px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.5vw, 30px);
+    color: var(--gold-light);
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+  }
+
+  .hero-desc {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--text-light);
+    max-width: 480px;
+    line-height: 1.9;
+    margin: 0 auto 48px;
+    font-weight: 300;
+  }
+
+  .hero-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 40px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.4s;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .btn-primary:hover::before { transform: scaleX(1); }
+  .btn-primary:hover { color: var(--black); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: float 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator span {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-mid);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* ─── SECTION COMMON ─── */
+  section {
+    padding: 120px 60px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-tag {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto;
+  }
+
+  /* ─── GALLERY SECTION ─── */
+  #gallery {
+    background: var(--charcoal);
+  }
+
+  .gallery-filter {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 8px 24px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: var(--text-light);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--dark);
+  }
+
+  .gallery-item.featured {
+    grid-column: span 2;
+    aspect-ratio: 16/10;
+  }
+
+  .gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: linear-gradient(135deg, #1a1a1a, #252525);
+  }
+
+  .placeholder-icon {
+    font-size: 40px;
+    opacity: 0.3;
+  }
+
+  .placeholder-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-mid);
+    letter-spacing: 1px;
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .painting-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .painting-medium {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .painting-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .auction-badge {
+    border-color: #E53935;
+    color: #E53935;
+  }
+
+  .auction-badge .status-dot {
+    background: #E53935;
+  }
+
+  /* ─── ARTWORK MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    padding: 40px;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1000px;
+    width: 100%;
+    transform: translateY(30px);
+    transition: transform 0.4s;
+  }
+
+  .modal-overlay.active .modal-content {
+    transform: translateY(0);
+  }
+
+  .modal-image {
+    aspect-ratio: 4/5;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    opacity: 0.4;
+  }
+
+  .modal-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .modal-tag {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    color: var(--cream);
+    letter-spacing: 2px;
+  }
+
+  .modal-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .modal-detail-label {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-mid);
+    text-transform: uppercase;
+  }
+
+  .modal-detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--cream);
+  }
+
+  .modal-price {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: #06C755;
+    color: white;
+    border: none;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .btn-line:hover { background: #05A847; }
+
+  .btn-email {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-email:hover { background: rgba(201,168,76,0.1); }
+
+  .modal-close {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    background: transparent;
+    border: none;
+    color: var(--text-mid);
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 1001;
+    font-family: serif;
+  }
+
+  .modal-close:hover { color: var(--gold); }
+
+  /* ─── EBOOK SECTION ─── */
+  #ebooks {
+    background: var(--black);
+  }
+
+  .ebook-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .ebook-card {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .ebook-cover {
+    aspect-ratio: 2/3;
+    background: linear-gradient(135deg, #1a1208, #2a1f0a);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.4s ease;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .ebook-card:hover .ebook-cover {
+    transform: translateY(-8px);
+  }
+
+  .ebook-cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, transparent 60%);
+  }
+
+  .ebook-cover-spine {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .ebook-cover-title {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold-light);
+    text-align: center;
+    padding: 0 24px;
+    letter-spacing: 2px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ebook-cover-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ebook-cover-author {
+    position: absolute;
+    bottom: 20px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .ebook-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--cream);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .ebook-desc {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+
+  .ebook-download-tag {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ─── EBOOK MODAL ─── */
+  .ebook-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.96);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+
+  .ebook-modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .ebook-modal {
+    background: #111108;
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 60px;
+    max-width: 520px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.4s;
+  }
+
+  .ebook-modal-overlay.active .ebook-modal {
+    transform: scale(1);
+  }
+
+  .ebook-modal-icon { font-size: 48px; margin-bottom: 24px; }
+
+  .ebook-modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--cream);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .ebook-modal-sub {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 40px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus {
+    border-color: var(--gold);
+  }
+
+  .form-group input::placeholder {
+    color: var(--text-mid);
+    font-size: 13px;
+  }
+
+  .btn-download {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.3s;
+    font-weight: 600;
+  }
+
+  .btn-download:hover { background: var(--gold-light); }
+
+  .form-note {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    color: var(--text-mid);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  /* ─── ABOUT SECTION ─── */
+  #about {
+    background: linear-gradient(135deg, #0f0d08, #1a1510);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 60px;
+  }
+
+  .about-image-frame {
+    position: relative;
+  }
+
+  .about-image-placeholder {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #1a1510, #252015);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    border: 1px solid rgba(201,168,76,0.15);
+    font-size: 48px;
+    color: rgba(201,168,76,0.2);
+  }
+
+  .about-frame-deco {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.4;
+  }
+
+  .about-frame-deco.tl { top: -16px; left: -16px; border-width: 2px 0 0 2px; }
+  .about-frame-deco.br { bottom: -16px; right: -16px; border-width: 0 2px 2px 0; }
+
+  .about-text { }
+
+  .about-name {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    color: var(--cream);
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+
+  .about-title-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+
+  .about-bio {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 2;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    color: var(--text-mid);
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+
+  /* ─── CONTACT SECTION ─── */
+  #contact {
+    background: var(--charcoal);
+    text-align: center;
+  }
+
+  .contact-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .contact-channel {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 32px;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.02);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .contact-channel:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+
+  .channel-icon { font-size: 24px; }
+
+  .channel-info { flex: 1; text-align: left; }
+
+  .channel-name {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .channel-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--cream);
+  }
+
+  .channel-arrow {
+    color: var(--gold);
+    font-size: 20px;
+    opacity: 0.5;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .contact-channel:hover .channel-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black);
+    padding: 48px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 4px;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-social a {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-mid);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-social a:hover { color: var(--gold); }
+
+  .footer-copy {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    color: var(--text-mid);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ─── SUCCESS STATE ─── */
+  .download-success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .download-success.show { display: flex; }
+
+  .success-icon { font-size: 48px; }
+
+  .success-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold);
+    text-align: center;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-item.featured { grid-column: span 2; }
+    .ebook-grid { grid-template-columns: 1fr; }
+    #about { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+    .modal-content { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#hero" class="nav-logo">PainterDoctor</a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#ebooks">eBooks</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">— Fine Art & Healing Words —</p>
+    <h1 class="hero-name">ADISORN<br>PATRADUL</h1>
+    <p class="hero-subtitle">PainterDoctor · หมอวาดรูป</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">ศาสตราจารย์แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือ ผู้สร้างสรรค์ผลงานศิลปะ สีน้ำ และ Acrylic ด้วยใจรักในทุกผลงาน</p>
+    <a href="#gallery" class="btn-primary"><span>Explore Gallery</span></a>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- GALLERY SECTION -->
+<section id="gallery">
+  <div class="section-header">
+    <span class="section-tag">Original Artworks</span>
+    <h2 class="section-title">The Gallery</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="gallery-filter">
+    <button class="filter-btn active" onclick="filterGallery('all', this)">All Works</button>
+    <button class="filter-btn" onclick="filterGallery('watercolor', this)">Watercolor</button>
+    <button class="filter-btn" onclick="filterGallery('acrylic', this)">Acrylic</button>
+    <button class="filter-btn" onclick="filterGallery('available', this)">Available</button>
+    <button class="filter-btn" onclick="filterGallery('auction', this)">Auction</button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+
+    <div class="gallery-item featured" data-category="acrylic available" onclick="openPainting('painting1')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🎨</div>
+        <div class="placeholder-text">Featured Artwork — อัปโหลดรูปของคุณหมอได้ที่นี่</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">Landscape with Purple Wildflowers</div>
+        <div class="painting-medium">Acrylic on Canvas · 60×80 cm</div>
+        <div class="painting-status"><div class="status-dot"></div>Available for Purchase</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="watercolor available" onclick="openPainting('painting2')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🌸</div>
+        <div class="placeholder-text">Watercolor</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">Strawberries in Morning Light</div>
+        <div class="painting-medium">Watercolor on Paper · 30×40 cm</div>
+        <div class="painting-status"><div class="status-dot"></div>Available</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="watercolor auction" onclick="openPainting('painting3')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🌧️</div>
+        <div class="placeholder-text">Watercolor</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">Rainy Evening</div>
+        <div class="painting-medium">Watercolor on Paper · 30×40 cm</div>
+        <div class="painting-status auction-badge"><div class="status-dot"></div>Live Auction</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="acrylic available" onclick="openPainting('painting4')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🌺</div>
+        <div class="placeholder-text">Acrylic</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">Floral Bouquet</div>
+        <div class="painting-medium">Acrylic on Canvas · 50×60 cm</div>
+        <div class="painting-status"><div class="status-dot"></div>Available</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="watercolor available" onclick="openPainting('painting5')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🌊</div>
+        <div class="placeholder-text">Watercolor</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">Seascape at Dusk</div>
+        <div class="painting-medium">Watercolor · 40×50 cm</div>
+        <div class="painting-status"><div class="status-dot"></div>Available</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="acrylic" onclick="openPainting('painting6')">
+      <div class="gallery-placeholder">
+        <div class="placeholder-icon">🌍</div>
+        <div class="placeholder-text">Acrylic</div>
+      </div>
+      <div class="gallery-overlay">
+        <div class="painting-title">World Medical — Cosmic Vision</div>
+        <div class="painting-medium">Acrylic on Canvas · 60×60 cm</div>
+        <div class="painting-status auction-badge"><div class="status-dot"></div>Live Auction</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GALLERY MODAL -->
+<div class="modal-overlay" id="paintingModal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closePainting()">✕</button>
+  <div class="modal-content">
+    <div class="modal-image" id="modalImage">🎨</div>
+    <div class="modal-info">
+      <div class="modal-tag" id="modalTag">Original Artwork</div>
+      <h3 class="modal-title" id="modalTitle">—</h3>
+      <div class="modal-details" id="modalDetails"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-actions">
+        <a href="https://line.me/ti/p/YOUR_LINE_ID" target="_blank" class="btn-line">
+          <span>💬</span> ติดต่อผ่าน LINE
+        </a>
+        <a href="mailto:painterdoctor@worldmedical.co.th" class="btn-email">
+          ✉ ส่ง Email สอบถาม
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EBOOK SECTION -->
+<section id="ebooks">
+  <div class="section-header">
+    <span class="section-tag">Knowledge & Inspiration</span>
+    <h2 class="section-title">eBooks</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="ebook-grid">
+
+    <div class="ebook-card" onclick="openEbook('ebook1')">
+      <div class="ebook-cover">
+        <div class="ebook-cover-spine"></div>
+        <div class="ebook-cover-icon">🏥</div>
+        <div class="ebook-cover-title">ศิลปะแห่งการแพทย์</div>
+        <div class="ebook-cover-author">Adisorn Patradul</div>
+      </div>
+      <div class="ebook-title">ศิลปะแห่งการแพทย์</div>
+      <div class="ebook-desc">มุมมองของแพทย์ผู้เชี่ยวชาญที่ค้นพบว่า ศิลปะและการแพทย์ไม่ได้แยกจากกัน แต่เชื่อมโยงกันในทุกขั้นตอน</div>
+      <div class="ebook-download-tag">📥 Free Download · สมัครสมาชิกก่อน</div>
+    </div>
+
+    <div class="ebook-card" onclick="openEbook('ebook2')">
+      <div class="ebook-cover">
+        <div class="ebook-cover-spine"></div>
+        <div class="ebook-cover-icon">🎨</div>
+        <div class="ebook-cover-title">สีน้ำ จากศูนย์ ถึงผลงาน</div>
+        <div class="ebook-cover-author">PainterDoctor</div>
+      </div>
+      <div class="ebook-title">สีน้ำจากศูนย์ถึงผลงาน</div>
+      <div class="ebook-desc">เรียนรู้เทคนิคสีน้ำและ Acrylic ฉบับ PainterDoctor ตั้งแต่เริ่มต้นจนสร้างสรรค์ผลงานที่มีคุณค่า</div>
+      <div class="ebook-download-tag">📥 Free Download · สมัครสมาชิกก่อน</div>
+    </div>
+
+    <div class="ebook-card" onclick="openEbook('ebook3')">
+      <div class="ebook-cover">
+        <div class="ebook-cover-spine"></div>
+        <div class="ebook-cover-icon">🌟</div>
+        <div class="ebook-cover-title">Smart Hospital Vision 2030</div>
+        <div class="ebook-cover-author">Prof. Adisorn Patradul</div>
+      </div>
+      <div class="ebook-title">Smart Hospital Vision 2030</div>
+      <div class="ebook-desc">วิสัยทัศน์ของโรงพยาบาลอัจฉริยะ บทเรียนจากประสบการณ์จริงในการบริหารโรงพยาบาลเอกชนชั้นนำ</div>
+      <div class="ebook-download-tag">📥 Free Download · สมัครสมาชิกก่อน</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EBOOK MODAL -->
+<div class="ebook-modal-overlay" id="ebookModal" onclick="closeEbookModal(event)">
+  <button class="modal-close" onclick="closeEbook()">✕</button>
+  <div class="ebook-modal">
+    <div class="ebook-modal-icon" id="ebookIcon">📚</div>
+    <h3 class="ebook-modal-title" id="ebookModalTitle">—</h3>
+    <p class="ebook-modal-sub">กรอกชื่อและ Email เพื่อรับ eBook ฟรีทันที<br>ไม่มีค่าใช้จ่ายใดๆ</p>
+
+    <div id="ebookForm">
+      <div class="form-group">
+        <label>ชื่อ-นามสกุล</label>
+        <input type="text" id="userName" placeholder="กรุณากรอกชื่อของคุณ">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="userEmail" placeholder="your@email.com">
+      </div>
+      <button class="btn-download" onclick="submitEbookForm()">รับ eBook ฟรี →</button>
+      <p class="form-note">📌 ระบบจะส่งลิงก์ดาวน์โหลดไปยัง Email ของคุณ<br>ข้อมูลของคุณจะถูกเก็บเป็นความลับ</p>
+    </div>
+
+    <div class="download-success" id="downloadSuccess">
+      <div class="success-icon">✨</div>
+      <div class="success-msg">ขอบคุณครับ!<br>ลิงก์ดาวน์โหลดส่งไปยัง Email แล้ว</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about-wrapper" style="background: linear-gradient(135deg, #0f0d08, #1a1510);">
+  <div id="about">
+    <div class="about-image-frame">
+      <div class="about-image-placeholder">
+        <div>👨‍⚕️</div>
+        <div style="font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:2px;color:rgba(201,168,76,0.4)">อัปโหลดรูปภาพ</div>
+      </div>
+      <div class="about-frame-deco tl"></div>
+      <div class="about-frame-deco br"></div>
+    </div>
+    <div class="about-text">
+      <p class="section-tag" style="text-align:left">The Artist & The Doctor</p>
+      <h2 class="about-name">ADISORN<br>PATRADUL</h2>
+      <p class="about-title-text">PainterDoctor · หมอวาดรูป</p>
+      <p class="about-bio">ศาสตราจารย์ นายแพทย์ อดิศร ภัทราดูลย์ แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือและจุลศัลยกรรม อดีตคณบดีคณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย และผู้อำนวยการโรงพยาบาลจุฬาลงกรณ์ สภากาชาดไทย</p>
+      <p class="about-bio">ปัจจุบันดำรงตำแหน่งผู้อำนวยการโรงพยาบาลเวิลด์เมดิคอล ควบคู่กับการสร้างสรรค์ผลงานศิลปะในนาม <em>"PainterDoctor"</em> โดยใช้สื่อสีน้ำและ Acrylic เพื่อแสดงออกถึงมุมมองชีวิตที่สวยงาม</p>
+      <div class="about-stats">
+        <div class="stat-item">
+          <span class="stat-number">30+</span>
+          <span class="stat-label">ปี ประสบการณ์แพทย์</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">ผลงานภาพวาด</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">2</span>
+          <span class="stat-label">สื่อหลัก Watercolor & Acrylic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-tag">Get in Touch</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-container">
+    <div class="contact-channels">
+      <a href="https://line.me/ti/p/YOUR_LINE_ID" target="_blank" class="contact-channel">
+        <div class="channel-icon">💬</div>
+        <div class="channel-info">
+          <span class="channel-name">LINE</span>
+          <span class="channel-value">@PainterDoctor</span>
+        </div>
+        <div class="channel-arrow">→</div>
+      </a>
+      <a href="mailto:painterdoctor@worldmedical.co.th" class="contact-channel">
+        <div class="channel-icon">✉️</div>
+        <div class="channel-info">
+          <span class="channel-name">Email</span>
+          <span class="channel-value">painterdoctor@worldmedical.co.th</span>
+        </div>
+        <div class="channel-arrow">→</div>
+      </a>
+      <a href="https://www.facebook.com/PainterDoctor" target="_blank" class="contact-channel">
+        <div class="channel-icon">📘</div>
+        <div class="channel-info">
+          <span class="channel-name">Facebook</span>
+          <span class="channel-value">PainterDoctor</span>
+        </div>
+        <div class="channel-arrow">→</div>
+      </a>
+      <a href="https://www.instagram.com/PainterDoctor" target="_blank" class="contact-channel">
+        <div class="channel-icon">📷</div>
+        <div class="channel-info">
+          <span class="channel-name">Instagram</span>
+          <span class="channel-value">@PainterDoctor</span>
+        </div>
+        <div class="channel-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ADISORN PATRADUL</div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/PainterDoctor" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/PainterDoctor" target="_blank">Instagram</a>
+    <a href="mailto:painterdoctor@worldmedical.co.th">Email</a>
+  </div>
+  <div class="footer-copy">© 2026 PainterDoctor. All rights reserved.</div>
+</footer>
+
+<script>
+// ── PAINTING DATA ──
+const paintings = {
+  painting1: {
+    emoji: '🎨', tag: 'Featured Work',
+    title: 'Landscape with Purple Wildflowers',
+    medium: 'Acrylic on Canvas', size: '60 × 80 cm', year: '2025',
+    status: 'Available', price: 'ราคา: ติดต่อสอบถาม'
+  },
+  painting2: {
+    emoji: '🌸', tag: 'Watercolor',
+    title: 'Strawberries in Morning Light',
+    medium: 'Watercolor on Paper', size: '30 × 40 cm', year: '2025',
+    status: 'Available', price: 'ราคา: ติดต่อสอบถาม'
+  },
+  painting3: {
+    emoji: '🌧️', tag: 'Live Auction',
+    title: 'Rainy Evening',
+    medium: 'Watercolor on Paper', size: '30 × 40 cm', year: '2025',
+    status: 'Live Auction', price: 'ราคาเริ่มต้น: ติดต่อสอบถาม'
+  },
+  painting4: {
+    emoji: '🌺', tag: 'Acrylic',
+    title: 'Floral Bouquet',
+    medium: 'Acrylic on Canvas', size: '50 × 60 cm', year: '2025',
+    status: 'Available', price: 'ราคา: ติดต่อสอบถาม'
+  },
+  painting5: {
+    emoji: '🌊', tag: 'Watercolor',
+    title: 'Seascape at Dusk',
+    medium: 'Watercolor', size: '40 × 50 cm', year: '2025',
+    status: 'Available', price: 'ราคา: ติดต่อสอบถาม'
+  },
+  painting6: {
+    emoji: '🌍', tag: 'Live Auction',
+    title: 'World Medical — Cosmic Vision',
+    medium: 'Acrylic on Canvas', size: '60 × 60 cm', year: '2026',
+    status: 'Live Auction', price: 'ราคาเริ่มต้น: ติดต่อสอบถาม'
+  }
+};
+
+const ebooks = {
+  ebook1: { icon: '🏥', title: 'ศิลปะแห่งการแพทย์' },
+  ebook2: { icon: '🎨', title: 'สีน้ำจากศูนย์ถึงผลงาน' },
+  ebook3: { icon: '🌟', title: 'Smart Hospital Vision 2030' }
+};
+
+// ── GALLERY FILTER ──
+function filterGallery(category, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    if (category === 'all' || item.dataset.category.includes(category)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// ── PAINTING MODAL ──
+function openPainting(id) {
+  const p = paintings[id];
+  document.getElementById('modalImage').textContent = p.emoji;
+  document.getElementById('modalTag').textContent = p.tag;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDetails').innerHTML = `
+    <div class="modal-detail">
+      <span class="modal-detail-label">Medium</span>
+      <span class="modal-detail-value">${p.medium}</span>
+    </div>
+    <div class="modal-detail">
+      <span class="modal-detail-label">Size</span>
+      <span class="modal-detail-value">${p.size}</span>
+    </div>
+    <div class="modal-detail">
+      <span class="modal-detail-label">Year</span>
+      <span class="modal-detail-value">${p.year}</span>
+    </div>
+    <div class="modal-detail">
+      <span class="modal-detail-label">Status</span>
+      <span class="modal-detail-value" style="color:var(--gold)">${p.status}</span>
+    </div>
+  `;
+  document.getElementById('modalPrice').textContent = p.price;
+  document.getElementById('paintingModal').classList.add('active');
+}
+
+function closePainting() {
+  document.getElementById('paintingModal').classList.remove('active');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'paintingModal') closePainting();
+}
+
+// ── EBOOK MODAL ──
+function openEbook(id) {
+  const eb = ebooks[id];
+  document.getElementById('ebookIcon').textContent = eb.icon;
+  document.getElementById('ebookModalTitle').textContent = eb.title;
+  document.getElementById('ebookForm').style.display = 'block';
+  document.getElementById('downloadSuccess').classList.remove('show');
+  document.getElementById('userName').value = '';
+  document.getElementById('userEmail').value = '';
+  document.getElementById('ebookModal').classList.add('active');
+}
+
+function closeEbook() {
+  document.getElementById('ebookModal').classList.remove('active');
+}
+
+function closeEbookModal(e) {
+  if (e.target.id === 'ebookModal') closeEbook();
+}
+
+function submitEbookForm() {
+  const name = document.getElementById('userName').value.trim();
+  const email = document.getElementById('userEmail').value.trim();
+  if (!name || !email) {
+    alert('กรุณากรอกชื่อและ Email ให้ครบถ้วนครับ');
+    return;
+  }
+  if (!email.includes('@')) {
+    alert('กรุณากรอก Email ที่ถูกต้องครับ');
+    return;
+  }
+  // In real use: send to backend or Formspree
+  document.getElementById('ebookForm').style.display = 'none';
+  document.getElementById('downloadSuccess').classList.add('show');
+}
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ── NAV HIGHLIGHT ON SCROLL ──
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 80) {
+    nav.style.background = 'rgba(0,0,0,0.95)';
+    nav.style.backdropFilter = 'blur(12px)';
+  } else {
+    nav.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)';
+    nav.style.backdropFilter = 'blur(2px)';
+  }
+});
+</script>
+</body>
+</html>
