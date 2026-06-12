@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADISORN PATRADUL — PainterDoctor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Sarabun:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C96A;--black:#0A0A0A;--charcoal:#1A1A1A;--cream:#F8F3E8;--text-light:#C8BFA8;--text-mid:#8A7D65;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--cream);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+.lang-switcher{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;box-shadow:0 4px 24px rgba(0,0,0,0.6);border:1px solid rgba(201,168,76,0.5);overflow:hidden;border-radius:2px;}
+.lang-btn{padding:12px 22px;border:none;border-right:1px solid rgba(201,168,76,0.3);background:rgba(10,10,10,0.95);color:var(--text-light);font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;cursor:pointer;transition:all 0.3s;}
+.lang-btn:last-child{border-right:none;}.lang-btn:hover{color:var(--gold);background:rgba(201,168,76,0.08);}
+.lang-btn.active{background:var(--gold);color:var(--black);font-weight:700;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 60px;background:linear-gradient(to bottom,rgba(0,0,0,0.9),transparent);backdrop-filter:blur(2px);transition:background 0.4s;}
+.nav-logo{font-family:'Cinzel',serif;font-size:13px;letter-spacing:4px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text-light);text-decoration:none;text-transform:uppercase;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+#hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.08) 0%,transparent 60%),linear-gradient(135deg,#0A0A0A 0%,#1A1410 50%,#0A0A0A 100%);}
+.hero-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);background-size:80px 80px;}
+.hero-content{text-align:center;position:relative;z-index:2;animation:fadeUp 1.4s ease both;}
+.hero-eyebrow{font-family:'Sarabun',sans-serif;font-size:11px;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:32px;}
+.hero-name{font-family:'Cinzel',serif;font-size:clamp(42px,6vw,80px);font-weight:400;color:var(--cream);line-height:1.1;margin-bottom:8px;letter-spacing:4px;}
+.hero-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,2.5vw,30px);color:var(--gold-light);margin-bottom:32px;letter-spacing:2px;}
+.hero-desc{font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text-light);max-width:480px;line-height:1.9;margin:0 auto 48px;font-weight:300;}
+.hero-divider{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 48px;}
+.btn-primary{display:inline-block;padding:14px 40px;border:1px solid var(--gold);color:var(--gold);font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all 0.4s;background:transparent;cursor:pointer;position:relative;overflow:hidden;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+.btn-primary:hover::before{transform:scaleX(1);}.btn-primary:hover{color:var(--black);}
+.btn-primary span{position:relative;z-index:1;}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:float 2s ease-in-out infinite;}
+.scroll-indicator span{font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.section-tag{font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block;}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(28px,4vw,48px);font-weight:400;color:var(--cream);letter-spacing:3px;margin-bottom:20px;}
+.section-line{width:60px;height:1px;background:var(--gold);margin:0 auto;}
+#gallery{background:#141414;padding:120px 0 80px;position:relative;}
+#gallery::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.gallery-header{text-align:center;margin-bottom:60px;padding:0 40px;}
+.gallery-intro{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--text-mid);max-width:500px;margin:16px auto 0;line-height:1.8;font-weight:300;}
+.gallery-filter{display:flex;justify-content:center;gap:4px;margin-bottom:60px;padding:0 40px;flex-wrap:wrap;}
+.filter-btn{padding:8px 24px;border:1px solid rgba(201,168,76,0.2);background:transparent;color:var(--text-mid);font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.04);}
+.museum-wall{background:#181818;padding:60px 40px 80px;position:relative;}
+.museum-wall::before{content:'';position:absolute;top:0;left:0;right:0;height:12px;background:linear-gradient(to bottom,#252525,#181818);}
+.gallery-row{display:flex;gap:28px;justify-content:center;max-width:1300px;margin:0 auto 36px;flex-wrap:wrap;}
+.painting-frame{position:relative;cursor:pointer;flex-shrink:0;transition:transform 0.4s ease;}
+.painting-frame:hover{transform:translateY(-8px);}
+.frame-outer{padding:10px;background:linear-gradient(135deg,#3a2e0e,#c9a84c,#3a2e0e,#c9a84c,#3a2e0e);box-shadow:0 0 0 1px rgba(201,168,76,0.3),0 20px 60px rgba(0,0,0,0.8);}
+.frame-inner{padding:6px;background:#0d0d0d;}
+.painting-img{display:block;width:100%;height:100%;object-fit:cover;}
+.painting-frame::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:2px;height:60px;background:linear-gradient(to bottom,rgba(255,240,180,0.6),transparent);opacity:0;transition:opacity 0.4s;z-index:2;}
+.painting-frame:hover::before{opacity:1;}
+.painting-label{text-align:center;margin-top:14px;padding:0 4px;}
+.label-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--cream);margin-bottom:4px;}
+.label-medium{font-family:'Sarabun',sans-serif;font-size:10px;color:var(--text-mid);letter-spacing:2px;text-transform:uppercase;}
+.label-status{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 12px;border:1px solid rgba(201,168,76,0.3);font-family:'Sarabun',sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+.sf{width:420px;}.sl{width:320px;}.sm{width:260px;}.ss{width:200px;}.st{width:220px;}
+.sf .painting-img{height:280px;}.sl .painting-img{height:260px;}.sm .painting-img{height:260px;}.ss .painting-img{height:200px;}.st .painting-img{height:320px;}
+.museum-floor{max-width:1300px;margin:16px auto 0;height:2px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.2),transparent);}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s;padding:40px;}
+.modal-overlay.active{opacity:1;pointer-events:all;}
+.modal-content{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;max-width:1000px;width:100%;transform:translateY(30px);transition:transform 0.4s;}
+.modal-overlay.active .modal-content{transform:translateY(0);}
+.modal-frame{padding:14px;background:linear-gradient(135deg,#3a2e0e,#c9a84c,#3a2e0e,#c9a84c,#3a2e0e);box-shadow:0 30px 80px rgba(0,0,0,0.9);}
+.modal-frame-inner{padding:6px;background:#0d0d0d;}
+.modal-frame img{width:100%;display:block;max-height:55vh;object-fit:contain;}
+.modal-info{display:flex;flex-direction:column;justify-content:center;gap:14px;}
+.modal-tag{font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;}
+.modal-title{font-family:'Cinzel',serif;font-size:22px;color:var(--cream);letter-spacing:2px;line-height:1.4;}
+.modal-detail{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.1);}
+.modal-detail-label{font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase;}
+.modal-detail-value{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);}
+.modal-close{position:fixed;top:30px;right:40px;background:transparent;border:none;color:var(--text-mid);font-size:28px;cursor:pointer;transition:color 0.3s;z-index:1001;}
+.modal-close:hover{color:var(--gold);}
+.btn-email{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;background:transparent;color:var(--gold);border:1px solid var(--gold);font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;margin-top:8px;}
+.btn-email:hover{background:rgba(201,168,76,0.1);}
+#ebooks{background:var(--black);padding:120px 60px;}
+.ebook-showcase{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.ebook-book{aspect-ratio:2/3;background:linear-gradient(135deg,#1a1208,#2a1f0a);border:1px solid rgba(201,168,76,0.2);position:relative;overflow:hidden;box-shadow:8px 8px 40px rgba(0,0,0,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
+.ebook-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:linear-gradient(to right,rgba(201,168,76,0.6),rgba(201,168,76,0.1));}
+.ebook-book::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 60%);}
+.ebz{position:relative;z-index:1;text-align:center;}
+.ebook-chapter{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.1);}
+.chapter-num{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;min-width:48px;}
+.chapter-title{font-family:'Sarabun',sans-serif;font-size:12px;color:var(--text-light);font-weight:300;}
+.ebook-cta{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);padding:24px;margin-top:28px;}
+.btn-ebook{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 32px;background:var(--gold);color:var(--black);border:none;font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background 0.3s;font-weight:600;width:100%;}
+.btn-ebook:hover{background:var(--gold-light);}
+#about-section{background:linear-gradient(135deg,#0f0d08,#1a1510);padding:120px 60px;}
+.about-inner{display:grid;grid-template-columns:1fr 1.4fr;align-items:center;gap:80px;max-width:1100px;margin:0 auto;}
+.about-photo-wrap{position:relative;}
+.about-photo-frame{padding:12px;background:linear-gradient(135deg,#3a2e0e,#c9a84c,#3a2e0e,#c9a84c,#3a2e0e);box-shadow:0 20px 60px rgba(0,0,0,0.7);}
+.about-photo-inner img{width:100%;display:block;object-fit:cover;aspect-ratio:3/4;}
+.deco{position:absolute;width:60px;height:60px;border-color:var(--gold);border-style:solid;opacity:0.4;}
+.deco.tl{top:-20px;left:-20px;border-width:2px 0 0 2px;}.deco.br{bottom:-20px;right:-20px;border-width:0 2px 2px 0;}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;padding-top:40px;border-top:1px solid rgba(201,168,76,0.15);}
+.stat-number{font-family:'Cinzel',serif;font-size:28px;color:var(--gold);display:block;margin-bottom:4px;}
+.stat-label{font-family:'Sarabun',sans-serif;font-size:11px;color:var(--text-mid);letter-spacing:1px;font-weight:300;}
+#contact{background:var(--charcoal);text-align:center;padding:120px 60px;}
+.contact-container{max-width:600px;margin:0 auto;}
+.contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:48px;}
+.cc{display:flex;align-items:center;gap:20px;padding:24px 32px;border:1px solid rgba(201,168,76,0.15);background:rgba(201,168,76,0.02);text-decoration:none;transition:all 0.3s;}
+.cc:hover{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.ci{flex:1;text-align:left;}.cn{font-family:'Sarabun',sans-serif;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:4px;}
+.cv{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);}
+.ca{color:var(--gold);font-size:20px;opacity:0.5;transition:opacity 0.3s,transform 0.3s;}.cc:hover .ca{opacity:1;transform:translateX(4px);}
+footer{background:var(--black);padding:48px 60px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(201,168,76,0.1);}
+.footer-logo{font-family:'Cinzel',serif;font-size:14px;color:var(--gold);letter-spacing:4px;}
+.footer-social{display:flex;gap:24px;}
+.footer-social a{font-family:'Sarabun',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text-mid);text-decoration:none;text-transform:uppercase;transition:color 0.3s;}
+.footer-social a:hover{color:var(--gold);}
+.footer-copy{font-family:'Sarabun',sans-serif;font-size:11px;color:var(--text-mid);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-10px);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+@media(max-width:900px){
+  nav{padding:20px 24px;}.nav-links{display:none;}
+  .lang-switcher{right:16px;bottom:16px;}
+  .gallery-row{flex-wrap:wrap;padding:0 12px;}
+  .sf,.sl,.sm,.ss,.st{width:calc(50% - 14px);}
+  .sf .painting-img,.sl .painting-img,.sm .painting-img,.ss .painting-img,.st .painting-img{height:160px;}
+  #ebooks{padding:80px 24px;}.ebook-showcase{grid-template-columns:1fr;gap:40px;}
+  #about-section{padding:80px 24px;}.about-inner{grid-template-columns:1fr;gap:40px;}
+  #contact{padding:80px 24px;}
+  .modal-content{grid-template-columns:1fr;gap:24px;}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:40px 24px;}
+}
+</style>
+</head>
+<body>
+<div class="lang-switcher">
+  <button class="lang-btn active" id="btnTH" onclick="setLang('th')">TH</button>
+  <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+</div>
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">PainterDoctor</a>
+  <ul class="nav-links">
+    <li><a href="#gallery" data-th="แกลเลอรี่" data-en="Gallery">แกลเลอรี่</a></li>
+    <li><a href="#ebooks" data-th="อีบุ๊ค" data-en="eBook">อีบุ๊ค</a></li>
+    <li><a href="#about-section" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a></li>
+    <li><a href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a></li>
+  </ul>
+</nav>
+<section id="hero">
+  <div class="hero-bg"></div><div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">— Fine Art &amp; Healing Words —</p>
+    <h1 class="hero-name">ADISORN<br>PATRADUL</h1>
+    <p class="hero-subtitle">PainterDoctor · หมอวาดรูป</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc" data-th="ศาสตราจารย์แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือ ผู้สร้างสรรค์ผลงานศิลปะ สีน้ำ และ Acrylic ด้วยใจรักในทุกผลงาน" data-en="Professor of Hand &amp; Microsurgery, creating watercolor and acrylic artworks with heart and soul.">ศาสตราจารย์แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือ ผู้สร้างสรรค์ผลงานศิลปะ สีน้ำ และ Acrylic ด้วยใจรักในทุกผลงาน</p>
+    <a href="#gallery" class="btn-primary"><span data-th="เข้าชมแกลเลอรี่" data-en="Enter Gallery">เข้าชมแกลเลอรี่</span></a>
+  </div>
+  <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+<section id="gallery">
+  <div class="gallery-header">
+    <span class="section-tag" data-th="ผลงานต้นฉบับ · ลงนามโดยศิลปิน" data-en="Original Artworks · Signed">ผลงานต้นฉบับ · ลงนามโดยศิลปิน</span>
+    <h2 class="section-title" data-th="แกลเลอรี่" data-en="The Gallery">แกลเลอรี่</h2>
+    <div class="section-line"></div>
+    <p class="gallery-intro" data-th="ผลงานต้นฉบับทุกชิ้นสร้างสรรค์และลงนามโดย ศ.นพ.อดิศร ภัทราดูลย์" data-en="All original works created and signed by Prof. Adisorn Patradul.">ผลงานต้นฉบับทุกชิ้นสร้างสรรค์และลงนามโดย ศ.นพ.อดิศร ภัทราดูลย์</p>
+  </div>
+  <div class="gallery-filter">
+    <button class="filter-btn active" onclick="filterGallery('all',this)" data-th="ทั้งหมด" data-en="All Works">ทั้งหมด</button>
+    <button class="filter-btn" onclick="filterGallery('acrylic',this)" data-th="อะคริลิค" data-en="Acrylic">อะคริลิค</button>
+    <button class="filter-btn" onclick="filterGallery('watercolor',this)" data-th="สีน้ำ" data-en="Watercolor">สีน้ำ</button>
+    <button class="filter-btn" onclick="filterGallery('mixed',this)" data-th="ผสม" data-en="Mixed Media">ผสม</button>
+  </div>
+  <div class="museum-wall">
+    <div class="gallery-row">
+      <div class="painting-frame sf" data-category="acrylic" onclick="openPainting('ship')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/ship.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="เรือโต้คลื่นในทะเลกว้างใหญ่" data-en="Sailing Through the Open Sea">เรือโต้คลื่นในทะเลกว้างใหญ่</div><div class="label-medium">Acrylic · 40×60 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sl" data-category="watercolor" onclick="openPainting('temple_rain')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/temple_rain.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ที่พักพิงทางจิตใจ" data-en="Solace of the Soul">ที่พักพิงทางจิตใจ</div><div class="label-medium">Watercolor · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sl" data-category="acrylic" onclick="openPainting('tree')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/tree.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ต้นไม้แห่งชีวิต" data-en="Tree of Life">ต้นไม้แห่งชีวิต</div><div class="label-medium">Acrylic on Canvas · 40×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+    </div>
+    <div class="gallery-row">
+      <div class="painting-frame sl" data-category="acrylic" onclick="openPainting('flower_vase_orange')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/flower_vase_orange.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ดอกไม้แด่คุณครู" data-en="Flowers for the Teacher">ดอกไม้แด่คุณครู</div><div class="label-medium">Acrylic on Canvas · 40×50 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame st" data-category="acrylic" onclick="openPainting('boat_lake')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/boat_lake.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="เรือแจวที่สงบนิ่ง" data-en="The Still Rowboat">เรือแจวที่สงบนิ่ง</div><div class="label-medium">Acrylic on Canvas · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="watercolor" onclick="openPainting('buddha_lotus')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/buddha_lotus.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ร่มรื่น ใจสงบ" data-en="Stillness and Serenity">ร่มรื่น ใจสงบ</div><div class="label-medium">Watercolor · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="acrylic" onclick="openPainting('flower_vase_multi')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/flower_vase_multi.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="แจกันดอกไม้หลากสี" data-en="The Colourful Bouquet">แจกันดอกไม้หลากสี</div><div class="label-medium">Acrylic on Canvas · 40×50 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+    </div>
+    <div class="gallery-row">
+      <div class="painting-frame st" data-category="watercolor" onclick="openPainting('roses')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/roses.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="กุหลาบที่หุบเดี๋ยวก็บาน" data-en="Roses in Full Bloom">กุหลาบที่หุบเดี๋ยวก็บาน</div><div class="label-medium">Watercolor · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame st" data-category="watercolor" onclick="openPainting('rural_village')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/rural_village.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="หมู่บ้านชนบทที่สงบ" data-en="The Quiet Village">หมู่บ้านชนบทที่สงบ</div><div class="label-medium">Watercolor · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="mixed" onclick="openPainting('park')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/park.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="สวนสาธารณะยามฝน" data-en="Park in the Rain">สวนสาธารณะยามฝน</div><div class="label-medium">Watercolor &amp; Acrylic · 30×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="watercolor" onclick="openPainting('rooster')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/rooster.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ไก่แจ้ผู้สง่างาม" data-en="The Proud Rooster">ไก่แจ้ผู้สง่างาม</div><div class="label-medium">Watercolor · 20×30 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+    </div>
+    <div class="gallery-row">
+      <div class="painting-frame sm" data-category="watercolor" onclick="openPainting('stream')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/stream.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ลำธารสีเขียวขจี" data-en="The Emerald Stream">ลำธารสีเขียวขจี</div><div class="label-medium">Watercolor · 30×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="acrylic" onclick="openPainting('flowers')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/flowers.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ทุ่งดอกไม้หลากสี" data-en="Wildflower Meadow">ทุ่งดอกไม้หลากสี</div><div class="label-medium">Acrylic · 40×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame st" data-category="acrylic" onclick="openPainting('village')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/village.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="บ้านในชนบทที่ร่มรื่น" data-en="Countryside Tranquility">บ้านในชนบทที่ร่มรื่น</div><div class="label-medium">Acrylic · 30×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame ss" data-category="watercolor" onclick="openPainting('strawberry')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/strawberry.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="สตรอเบอรี่ที่แสนหวาน" data-en="Sweet Strawberries">สตรอเบอรี่ที่แสนหวาน</div><div class="label-medium">Watercolor · 25×30 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame st" data-category="mixed" onclick="openPainting('waterfall')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/waterfall.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="น้ำตกที่เปี่ยมด้วยพลัง" data-en="The Mighty Waterfall">น้ำตกที่เปี่ยมด้วยพลัง</div><div class="label-medium">Watercolor &amp; Acrylic · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+    </div>
+    <div class="museum-floor"></div>
+  </div>
+</section>
+<div class="modal-overlay" id="paintingModal" onclick="closeModalBg(event)">
+  <button class="modal-close" onclick="closePainting()">✕</button>
+  <div class="modal-content">
+    <div><div class="modal-frame"><div class="modal-frame-inner"><img id="modalImg" src="" alt=""></div></div></div>
+    <div class="modal-info">
+      <div class="modal-tag" id="modalTag"></div>
+      <h3 class="modal-title" id="modalTitle"></h3>
+      <div id="modalDetails"></div>
+      <a href="mailto:patradul.a@gmail.com" class="btn-email">✉ patradul.a@gmail.com</a>
+    </div>
+  </div>
+</div>
+<section id="ebooks">
+  <div style="text-align:center;margin-bottom:80px">
+    <span class="section-tag" data-th="หนังสือชุดผู้นำ" data-en="Leadership Book Series">หนังสือชุดผู้นำ</span>
+    <h2 class="section-title">eBook</h2><div class="section-line"></div>
+  </div>
+  <div class="ebook-showcase">
+    <div class="ebook-book">
+      <div class="ebz" style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:4px;color:var(--gold);margin-bottom:24px;opacity:0.7;">WMC</div>
+      <div class="ebz" style="font-family:'Sarabun',sans-serif;font-size:10px;letter-spacing:3px;color:var(--text-mid);text-transform:uppercase;margin-bottom:12px;">Leadership Book Series</div>
+      <div class="ebz" style="width:40px;height:1px;background:var(--gold);margin:0 auto 20px;"></div>
+      <div class="ebz" style="font-family:'Cinzel',serif;font-size:15px;color:var(--cream);letter-spacing:2px;line-height:1.6;margin-bottom:8px;" data-th="เพื่อนคู่ใจในการ<br>บริหารโรงพยาบาล<br>แบบมืออาชีพ" data-en="A Professional's Guide<br>to Hospital<br>Management">เพื่อนคู่ใจในการ<br>บริหารโรงพยาบาล<br>แบบมืออาชีพ</div>
+      <div class="ebz" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--gold-light);margin-bottom:32px;">A Professional's Guide to<br>Hospital Management</div>
+      <div class="ebz" style="width:40px;height:1px;background:var(--gold);margin:0 auto 20px;"></div>
+      <div class="ebz" style="font-family:'Sarabun',sans-serif;font-size:11px;letter-spacing:1px;color:var(--text-mid);" data-th="ศาสตราจารย์ นายแพทย์ อดิศร ภัทราดูลย์" data-en="Prof. Adisorn Patradul, M.D.">ศาสตราจารย์ นายแพทย์ อดิศร ภัทราดูลย์</div>
+      <div class="ebz" style="font-family:'Sarabun',sans-serif;font-size:10px;color:var(--text-mid);margin-top:4px;" data-th="พิมพ์ครั้งที่ 1 · 2026" data-en="1st Edition · 2026">พิมพ์ครั้งที่ 1 · 2026</div>
+    </div>
+    <div>
+      <span class="section-tag" style="display:block" data-th="อีบุ๊คฟรี" data-en="Free eBook">อีบุ๊คฟรี</span>
+      <h3 style="font-family:'Cinzel',serif;font-size:24px;color:var(--cream);letter-spacing:2px;margin-bottom:12px;line-height:1.4;" data-th="เพื่อนคู่ใจในการบริหารโรงพยาบาลแบบมืออาชีพ" data-en="A Professional's Guide to Hospital Management">เพื่อนคู่ใจในการบริหารโรงพยาบาลแบบมืออาชีพ</h3>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-light);margin-bottom:20px;">A Professional's Guide to Hospital Management</p>
+      <p style="font-family:'Sarabun',sans-serif;font-size:13px;color:var(--text-light);line-height:2;font-weight:300;margin-bottom:24px;" data-th="ถ่ายทอดประสบการณ์กว่า 4 ทศวรรษในวงการแพทย์ เพื่อผู้บริหารโรงพยาบาลรุ่นใหม่" data-en="Four decades of medical experience — for the next generation of hospital administrators.">ถ่ายทอดประสบการณ์กว่า 4 ทศวรรษในวงการแพทย์ เพื่อผู้บริหารโรงพยาบาลรุ่นใหม่</p>
+      <div>
+        <div class="ebook-chapter"><span class="chapter-num" data-th="บทที่ 1" data-en="Chapter 1">บทที่ 1</span><span class="chapter-title" data-th="DNA ของผู้บริหารโรงพยาบาลมืออาชีพ" data-en="DNA of a Professional Hospital Leader">DNA ของผู้บริหารโรงพยาบาลมืออาชีพ</span></div>
+        <div class="ebook-chapter"><span class="chapter-num" data-th="บทที่ 2" data-en="Chapter 2">บทที่ 2</span><span class="chapter-title" data-th="กลยุทธ์และวิสัยทัศน์ในยุค Disruption" data-en="Strategy &amp; Vision in the Age of Disruption">กลยุทธ์และวิสัยทัศน์ในยุค Disruption</span></div>
+        <div class="ebook-chapter"><span class="chapter-num" data-th="บทที่ 3" data-en="Chapter 3">บทที่ 3</span><span class="chapter-title" data-th="การบริหารการเงินโรงพยาบาล" data-en="Hospital Financial Management">การบริหารการเงินโรงพยาบาล</span></div>
+      </div>
+      <div class="ebook-cta">
+        <p style="font-family:'Sarabun',sans-serif;font-size:13px;color:var(--text-mid);line-height:1.8;margin-bottom:16px;font-weight:300;" data-th="หนังสือเล่มนี้แจกฟรี ติดต่อขอรับได้ผ่าน Email" data-en="This eBook is free. Request your copy via Email.">หนังสือเล่มนี้แจกฟรี <strong style="color:var(--gold)">ติดต่อขอรับได้ผ่าน Email</strong></p>
+        <a href="mailto:patradul.a@gmail.com?subject=ขอรับ eBook&body=ชื่อ: %0Aองค์กร: " class="btn-ebook" data-th="✉ ขอรับ eBook ฟรี ทาง Email" data-en="✉ Request Free eBook via Email">✉ ขอรับ eBook ฟรี ทาง Email</a>
+        <p style="font-family:'Sarabun',sans-serif;font-size:11px;color:var(--text-mid);margin-top:10px;text-align:center;">📧 patradul.a@gmail.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="about-section">
+  <div class="about-inner">
+    <div class="about-photo-wrap">
+      <div class="about-photo-frame"><div class="about-photo-inner"><img src="images/profile.jpg" alt="ศ.นพ.อดิศร ภัทราดูลย์"></div></div>
+      <div class="deco tl"></div><div class="deco br"></div>
+    </div>
+    <div>
+      <span class="section-tag" style="display:block" data-th="ศิลปินและแพทย์" data-en="The Artist &amp; The Doctor">ศิลปินและแพทย์</span>
+      <h2 style="font-family:'Cinzel',serif;font-size:32px;color:var(--cream);letter-spacing:3px;margin-bottom:4px;">ADISORN<br>PATRADUL</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold);margin-bottom:32px;">PainterDoctor · หมอวาดรูป</p>
+      <p style="font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text-light);line-height:2;font-weight:300;margin-bottom:20px;" data-th="ศาสตราจารย์ นายแพทย์ อดิศร ภัทราดูลย์ แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือและจุลศัลยกรรม อดีตคณบดีคณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย และผู้อำนวยการโรงพยาบาลจุฬาลงกรณ์ สภากาชาดไทย" data-en="Professor Adisorn Patradul, M.D. — specialist in Hand Surgery and Microsurgery. Former Dean, Faculty of Medicine, Chulalongkorn University, and Director, King Chulalongkorn Memorial Hospital.">ศาสตราจารย์ นายแพทย์ อดิศร ภัทราดูลย์ แพทย์ผู้เชี่ยวชาญด้านศัลยกรรมมือและจุลศัลยกรรม อดีตคณบดีคณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย และผู้อำนวยการโรงพยาบาลจุฬาลงกรณ์ สภากาชาดไทย</p>
+      <p style="font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text-light);line-height:2;font-weight:300;" data-th="ปัจจุบันดำรงตำแหน่งผู้อำนวยการโรงพยาบาลเวิลด์เมดิคอล ควบคู่กับการสร้างสรรค์ผลงานศิลปะในนาม PainterDoctor" data-en="Currently Director of World Medical Hospital, creating artworks under the name PainterDoctor.">ปัจจุบันดำรงตำแหน่งผู้อำนวยการโรงพยาบาลเวิลด์เมดิคอล ควบคู่กับการสร้างสรรค์ผลงานศิลปะในนาม <em>"PainterDoctor"</em></p>
+      <div class="about-stats">
+        <div style="text-align:center"><span class="stat-number">40+</span><span class="stat-label" data-th="ปีประสบการณ์แพทย์" data-en="Years Medical Experience">ปีประสบการณ์แพทย์</span></div>
+        <div style="text-align:center"><span class="stat-number">16</span><span class="stat-label" data-th="ผลงานในแกลเลอรี่" data-en="Works in Gallery">ผลงานในแกลเลอรี่</span></div>
+        <div style="text-align:center"><span class="stat-number">1</span><span class="stat-label" data-th="หนังสือ Leadership" data-en="Leadership Book">หนังสือ Leadership</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="contact">
+  <div style="text-align:center;margin-bottom:48px">
+    <span class="section-tag" data-th="ช่องทางติดต่อ" data-en="Get in Touch">ช่องทางติดต่อ</span>
+    <h2 class="section-title" data-th="ติดต่อ" data-en="Contact">ติดต่อ</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-container">
+    <div class="contact-channels">
+      <a href="mailto:patradul.a@gmail.com" class="cc">
+        <div style="font-size:24px">✉️</div><div class="ci"><span class="cn">Email</span><span class="cv">patradul.a@gmail.com</span></div><div class="ca">→</div>
+      </a>
+      <a href="https://www.facebook.com/adisorn.patradul.1/" target="_blank" class="cc">
+        <div style="font-size:24px">📘</div><div class="ci"><span class="cn">Facebook</span><span class="cv">Adisorn Patradul</span></div><div class="ca">→</div>
+      </a>
+      <a href="https://www.instagram.com/dr.adisorn.art" target="_blank" class="cc">
+        <div style="font-size:24px">📷</div><div class="ci"><span class="cn">Instagram</span><span class="cv">@dr.adisorn.art</span></div><div class="ca">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">ADISORN PATRADUL</div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/adisorn.patradul.1/" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/dr.adisorn.art" target="_blank">Instagram</a>
+    <a href="mailto:patradul.a@gmail.com">Email</a>
+  </div>
+  <div class="footer-copy">© 2026 PainterDoctor · painterdoctor.com</div>
+</footer>
+<script>
+let currentLang='th';
+function setLang(lang){
+  currentLang=lang;
+  document.getElementById('btnTH').classList.toggle('active',lang==='th');
+  document.getElementById('btnEN').classList.toggle('active',lang==='en');
+  document.querySelectorAll('[data-th][data-en]').forEach(el=>{
+    el.innerHTML=lang==='th'?el.getAttribute('data-th'):el.getAttribute('data-en');
+  });
+}
+const paintings={
+  ship:{th:'เรือโต้คลื่นในทะเลกว้างใหญ่',en:'Sailing Through the Open Sea',medium:'Acrylic on Canvas',size:'40×60 cm',year:'2025',src:'images/ship.jpg'},
+  temple_rain:{th:'ที่พักพิงทางจิตใจ',en:'Solace of the Soul',medium:'Watercolor',size:'30×40 cm',year:'2026',src:'images/temple_rain.jpg'},
+  tree:{th:'ต้นไม้แห่งชีวิต',en:'Tree of Life',medium:'Acrylic on Canvas',size:'40×40 cm',year:'2025',src:'images/tree.jpg'},
+  flower_vase_orange:{th:'ดอกไม้แด่คุณครู',en:'Flowers for the Teacher',medium:'Acrylic on Canvas',size:'40×50 cm',year:'2026',src:'images/flower_vase_orange.jpg'},
+  boat_lake:{th:'เรือแจวที่สงบนิ่ง',en:'The Still Rowboat',medium:'Acrylic on Canvas',size:'30×40 cm',year:'2026',src:'images/boat_lake.jpg'},
+  buddha_lotus:{th:'ร่มรื่น ใจสงบ',en:'Stillness and Serenity',medium:'Watercolor',size:'30×40 cm',year:'2026',src:'images/buddha_lotus.jpg'},
+  flower_vase_multi:{th:'แจกันดอกไม้หลากสี',en:'The Colourful Bouquet',medium:'Acrylic on Canvas',size:'40×50 cm',year:'2026',src:'images/flower_vase_multi.jpg'},
+  roses:{th:'กุหลาบที่หุบเดี๋ยวก็บาน',en:'Roses in Full Bloom',medium:'Watercolor',size:'30×40 cm',year:'2026',src:'images/roses.jpg'},
+  rural_village:{th:'หมู่บ้านชนบทที่สงบ',en:'The Quiet Village',medium:'Watercolor',size:'30×40 cm',year:'2026',src:'images/rural_village.jpg'},
+  park:{th:'สวนสาธารณะยามฝน',en:'Park in the Rain',medium:'Watercolor & Acrylic',size:'30×40 cm',year:'2025',src:'images/park.jpg'},
+  rooster:{th:'ไก่แจ้ผู้สง่างาม',en:'The Proud Rooster',medium:'Watercolor',size:'20×30 cm',year:'2025',src:'images/rooster.jpg'},
+  stream:{th:'ลำธารสีเขียวขจี',en:'The Emerald Stream',medium:'Watercolor',size:'30×40 cm',year:'2025',src:'images/stream.jpg'},
+  flowers:{th:'ทุ่งดอกไม้หลากสี',en:'Wildflower Meadow',medium:'Acrylic on Canvas',size:'40×40 cm',year:'2025',src:'images/flowers.jpg'},
+  village:{th:'บ้านในชนบทที่ร่มรื่น',en:'Countryside Tranquility',medium:'Acrylic on Canvas',size:'30×40 cm',year:'2025',src:'images/village.jpg'},
+  strawberry:{th:'สตรอเบอรี่ที่แสนหวาน',en:'Sweet Strawberries',medium:'Watercolor on Paper',size:'25×30 cm',year:'2026',src:'images/strawberry.jpg'},
+  waterfall:{th:'น้ำตกที่เปี่ยมด้วยพลัง',en:'The Mighty Waterfall',medium:'Watercolor & Acrylic',size:'30×40 cm',year:'2026',src:'images/waterfall.jpg'},
+};
+function filterGallery(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.painting-frame').forEach(item=>{
+    item.style.display=(cat==='all'||item.dataset.category===cat)?'':'none';
+  });
+}
+function openPainting(id){
+  const p=paintings[id];
+  const title=currentLang==='th'?p.th:p.en;
+  const priceLabel=currentLang==='th'?'ราคา':'Price';
+  const inquire=currentLang==='th'?'ติดต่อสอบถาม':'Inquire';
+  document.getElementById('modalImg').src=p.src;
+  document.getElementById('modalTag').textContent=p.medium;
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalDetails').innerHTML=`<div class="modal-detail"><span class="modal-detail-label">Medium</span><span class="modal-detail-value">${p.medium}</span></div><div class="modal-detail"><span class="modal-detail-label">Size</span><span class="modal-detail-value">${p.size}</span></div><div class="modal-detail"><span class="modal-detail-label">Year</span><span class="modal-detail-value">${p.year}</span></div><div class="modal-detail"><span class="modal-detail-label">${priceLabel}</span><span class="modal-detail-value" style="color:var(--gold)">${inquire}</span></div>`;
+  document.getElementById('paintingModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closePainting(){document.getElementById('paintingModal').classList.remove('active');document.body.style.overflow='';}
+function closeModalBg(e){if(e.target.id==='paintingModal')closePainting();}
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('mainNav');
+  nav.style.background=window.scrollY>80?'rgba(0,0,0,0.96)':'linear-gradient(to bottom,rgba(0,0,0,0.9),transparent)';
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});
+});
+</script>
+</body>
+</html>
