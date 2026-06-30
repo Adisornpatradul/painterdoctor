@@ -271,6 +271,26 @@ footer{background:var(--black);padding:48px 60px;display:flex;justify-content:sp
         <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/waterfall.jpg" alt="" loading="lazy"></div></div>
         <div class="painting-label"><div class="label-title" data-th="น้ำตกที่เปี่ยมด้วยพลัง" data-en="The Mighty Waterfall">น้ำตกที่เปี่ยมด้วยพลัง</div><div class="label-medium">Watercolor &amp; Acrylic · 30×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
       </div>
+      <div class="painting-frame st" data-category="watercolor" onclick="openPainting('city_life')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/city_life.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ชีวิตคนกรุง" data-en="Urban Life">ชีวิตคนกรุง</div><div class="label-medium">Watercolor · 30×40 cm · 2020</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sl" data-category="acrylic" onclick="openPainting('final_destination')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/final_destination.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="จุดหมายสุดท้าย" data-en="The Final Destination">จุดหมายสุดท้าย</div><div class="label-medium">Acrylic on Canvas · 30×40 cm · 2024</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sm" data-category="acrylic" onclick="openPainting('pink_chamchuri')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/pink_chamchuri.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="ชมพูงามจามจุรี" data-en="Blooming Pink Mimosa">ชมพูงามจามจุรี</div><div class="label-medium">Acrylic on Canvas · 40×40 cm · 2026</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame sl" data-category="acrylic" onclick="openPainting('beach_waves')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/beach_waves.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="คลื่นกระทบฝั่ง" data-en="Waves Against the Shore">คลื่นกระทบฝั่ง</div><div class="label-medium">Acrylic on Canvas · 30×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
+      <div class="painting-frame st" data-category="watercolor" onclick="openPainting('watching')">
+        <div class="frame-outer"><div class="frame-inner"><img class="painting-img" src="images/watching.jpg" alt="" loading="lazy"></div></div>
+        <div class="painting-label"><div class="label-title" data-th="เฝ้ามอง" data-en="The Watchful Herons">เฝ้ามอง</div><div class="label-medium">Watercolor · 30×40 cm · 2025</div><div class="label-status"><div class="status-dot"></div><span data-th="พร้อมจำหน่าย" data-en="Available">พร้อมจำหน่าย</span></div></div>
+      </div>
     </div>
     <div class="museum-floor"></div>
   </div>
@@ -433,6 +453,11 @@ const paintings={
   village:{th:'บ้านในชนบทที่ร่มรื่น',en:'Countryside Tranquility',medium:'Acrylic on Canvas',size:'30×40 cm',year:'2025',src:'images/village.jpg'},
   strawberry:{th:'สตรอเบอรี่ที่แสนหวาน',en:'Sweet Strawberries',medium:'Watercolor on Paper',size:'25×30 cm',year:'2026',src:'images/strawberry.jpg'},
   waterfall:{th:'น้ำตกที่เปี่ยมด้วยพลัง',en:'The Mighty Waterfall',medium:'Watercolor & Acrylic',size:'30×40 cm',year:'2026',src:'images/waterfall.jpg'},
+  city_life:{th:'ชีวิตคนกรุง',en:'Urban Life',medium:'Watercolor',size:'30×40 cm',year:'2020',src:'images/city_life.jpg'},
+  final_destination:{th:'จุดหมายสุดท้าย',en:'The Final Destination',medium:'Acrylic on Canvas',size:'30×40 cm',year:'2024',src:'images/final_destination.jpg'},
+  pink_chamchuri:{th:'ชมพูงามจามจุรี',en:'Blooming Pink Mimosa',medium:'Acrylic on Canvas',size:'40×40 cm',year:'2026',src:'images/pink_chamchuri.jpg'},
+  beach_waves:{th:'คลื่นกระทบฝั่ง',en:'Waves Against the Shore',medium:'Acrylic on Canvas',size:'30×40 cm',year:'2025',src:'images/beach_waves.jpg'},
+  watching:{th:'เฝ้ามอง',en:'The Watchful Herons',medium:'Watercolor',size:'30×40 cm',year:'2025',src:'images/watching.jpg'},
 };
 function filterGallery(cat,btn){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
